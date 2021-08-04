@@ -18,7 +18,7 @@ code {
   background: #fff;
 }
 
-.header{
+.header-title{
   color: #fff !important;
   margin-top: 15px;
 }
@@ -36,4 +36,12 @@ code {
 .btn-load{
   text-align: center;
   margin-top: 35px;
+}
+
+.main-header{
+  height: auto !important;
+}
+
+.search-box{
+  vertical-align: middle;
 }

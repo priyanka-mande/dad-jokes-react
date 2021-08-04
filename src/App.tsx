@@ -51,8 +51,11 @@ function App() {
 
   return (
     <Layout className="layout">
-      <Header>
-        <Title level={3} className="header">Random Dad Jokes <span style={{ marginLeft:'20px' }}><Search placeholder="Search for dad jokes" onSearch={onSearch} allowClear enterButton style={{ width: 500 }} /></span></Title>
+      <Header className="main-header">
+          <Row>
+              <Col span={10}><Title level={3} className="header-title">Random Dad Jokes</Title></Col>
+              <Col span={14}><Search className="search-box" placeholder="Search for dad jokes" onSearch={onSearch} allowClear enterButton /></Col>
+          </Row>
       </Header>
       <Content style={{ padding: '0 50px' }}>
         <div className="site-layout-content">
