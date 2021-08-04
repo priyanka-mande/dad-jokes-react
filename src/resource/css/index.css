@@ -11,3 +11,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.site-layout-content {
+  min-height: 70vh;
+  padding: 24px 24px 48px 24px;
+  background: #fff;
+}
+
+.header{
+  color: #fff !important;
+  margin-top: 15px;
+}
+
+.listing{
+  font-size: 18px;
+}
+
+.icons{
+  font-size: 24px;
+  vertical-align: sub;
+  margin-right: 10px;
+}
+
+.btn-load{
+  text-align: center;
+  margin-top: 35px;
+}
