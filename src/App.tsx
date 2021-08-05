@@ -3,7 +3,7 @@ import { Layout, Typography, Row, Col, Input, Button, Card } from 'antd';
 import { ArrowDownOutlined } from '@ant-design/icons';
 import { getJokes } from './resource/Api/Api';
 import { JokeList } from './components/JokeList';
-import { Jokes } from './app-interface';
+import { Jokes } from './app.types';
 import 'antd/dist/antd.css';
 import './resource/css/index.css';
 
@@ -12,19 +12,14 @@ const { Title } = Typography;
 const { Search } = Input;
 
 function App() {
-  const [randomJokes, setRandomJoke] = useState([]);
-  const [searchText, setSearch] = useState('' as string);
+  const [randomJokes, setRandomJoke] = useState<Jokes[]>([]);
+  const [searchText, setSearch] = useState<string>('');
   const [loader, setLoader] = useState(false);
-    
-  useEffect(() => {
-    //Loads initial set of jokes
-    getJoke();
-  },[searchText]);
-
+  
   //Function for getting list of jokes via api  
   const getJoke = async () => {
     setLoader(true);
-    const jokesList: any = await getJokes<Jokes>(searchText ? `/search?limit=10&term=${searchText}` : '/search?limit=10');
+    const jokesList: Jokes[] = await getJokes(searchText ? `/search?limit=10&term=${searchText}` : '/search?limit=10');
     setRandomJoke(jokesList);
     setLoader(false);
   }
@@ -38,6 +33,11 @@ function App() {
   const loadMore = () => {
     getJoke();
   }
+
+  useEffect(() => {
+    //Loads initial set of jokes
+    getJoke();
+  },[searchText]);
 
   return (
     <Layout className="layout">

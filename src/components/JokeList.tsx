@@ -1,6 +1,6 @@
 
 import { Spin } from 'antd';
-import { JokesList } from '../app-interface'
+import { JokesList, Jokes } from '../app.types'
 import { Joke } from './Joke';
 import 'antd/dist/antd.css';
 
@@ -9,7 +9,7 @@ export const JokeList: React.FC<JokesList> = ({jokes, loader}) => {
         <>
             {!loader ? 
                 jokes.length ? 
-                    jokes.map((joke: any) => {
+                    jokes.map((joke: Jokes) => {
                         return( 
                             <span key={joke.id}><Joke data={joke.joke} /></span>
                         )

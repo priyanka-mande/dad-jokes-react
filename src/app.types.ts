@@ -1,5 +1,5 @@
 export interface JokesList {
-    jokes: string[],
+    jokes: Jokes[],
     loader: boolean
 }
 
