@@ -1,16 +1,13 @@
 import React from "react";
-import { Typography, Divider } from 'antd';
+import { JokeText } from "../app.types";
+import { Typography, Divider } from "antd";
 import { SmileTwoTone } from "@ant-design/icons";
 
 const { Text } = Typography;
 
-interface Props {
-  data: string;
-}
-
 //Component for individual joke display
 
-export const Joke: React.FC<Props> = ({ data }) => {
+export const IndividualJoke: React.FC<JokeText> = ({ data }) => {
   return (
     <div className="listing">
       <SmileTwoTone className="icons" /> <Text>{data}</Text>

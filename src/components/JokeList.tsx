@@ -1,7 +1,7 @@
 
 import { Spin } from 'antd';
-import { JokesList, Jokes } from '../app.types'
-import { Joke } from './Joke';
+import { JokesList, Joke } from '../app.types'
+import { IndividualJoke } from './IndividualJoke';
 import 'antd/dist/antd.css';
 
 export const JokeList: React.FC<JokesList> = ({jokes, loader}) => {
@@ -9,9 +9,9 @@ export const JokeList: React.FC<JokesList> = ({jokes, loader}) => {
         <>
             {!loader ? 
                 jokes.length ? 
-                    jokes.map((joke: Jokes) => {
+                    jokes.map((joke: Joke) => {
                         return( 
-                            <span key={joke.id}><Joke data={joke.joke} /></span>
+                            <span key={joke.id}><IndividualJoke data={joke.joke} /></span>
                         )
                     }) 
                 : <p className="no-content">No jokes found</p>
