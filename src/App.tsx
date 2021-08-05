@@ -14,30 +14,32 @@ const { Search } = Input;
 function App() {
   const [randomJokes, setRandomJoke] = useState<Jokes[]>([]);
   const [searchText, setSearch] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [loader, setLoader] = useState(false);
   
-  //Function for getting list of jokes via api  
-  const getJoke = async () => {
-    setLoader(true);
-    const jokesList: Jokes[] = await getJokes(searchText ? `/search?limit=10&term=${searchText}` : '/search?limit=10');
-    setRandomJoke(jokesList);
-    setLoader(false);
-  }
+  useEffect(() => {
+    //Function for getting list of jokes via api 
+    const getJoke = async () => {
+      setLoader(true);
+      const jokesList: Jokes[] = await getJokes(`/search?page=${currentPage}&limit=10&term=${searchText}`);
+      currentPage > 1 && !searchText ? setRandomJoke([...randomJokes, ...jokesList]) : setRandomJoke(jokesList);
+      setLoader(false);
+    }
+    getJoke();
+  },[searchText, currentPage]);
 
   const onSearch = async (value: string) => {
     if(searchText !== value){
+      if(value === '' || value){
+        setCurrentPage(1);
+      }
       setSearch(value);
     }
   }
 
   const loadMore = () => {
-    getJoke();
+    setCurrentPage(currentPage+1);
   }
-
-  useEffect(() => {
-    //Loads initial set of jokes
-    getJoke();
-  },[searchText]);
 
   return (
     <Layout className="layout">
