@@ -1,21 +1,21 @@
 
 import { Spin } from 'antd';
+import { JokesList } from '../app-interface'
 import { Joke } from './Joke';
 import 'antd/dist/antd.css';
 
-interface Props {
-    jokes: string[],
-    loader: boolean
-}
-
-export const JokeList: React.FC<Props> = ({jokes, loader}) => {
+export const JokeList: React.FC<JokesList> = ({jokes, loader}) => {
     return (
         <>
-            {!loader ? jokes.length ? jokes.map((joke: any) => {
-                return(
-                    <span key={joke.id}><Joke data={joke.joke} /></span>
-                )
-            }) : <p style={{margin: '40%', fontSize: '18px'}}>No jokes found...</p>: <Spin style={{margin: '40%'}} tip="Loading..." />}
+            {!loader ? 
+                jokes.length ? 
+                    jokes.map((joke: any) => {
+                        return( 
+                            <span key={joke.id}><Joke data={joke.joke} /></span>
+                        )
+                    }) 
+                : <p className="no-content">No jokes found</p>
+            : <Spin className="loader" tip="Loading..." />}
         </>
     );
 };

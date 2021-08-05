@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Layout, Typography, Row, Col, Input, Button } from 'antd';
+import { useState, useEffect } from "react";
+import { Layout, Typography, Row, Col, Input, Button, Card } from 'antd';
 import { ArrowDownOutlined } from '@ant-design/icons';
+import { getJokes } from './resource/Api/Api';
 import { JokeList } from './components/JokeList';
-import axios from "axios";
+import { Jokes } from './app-interface';
 import 'antd/dist/antd.css';
 import './resource/css/index.css';
 
@@ -11,41 +12,30 @@ const { Title } = Typography;
 const { Search } = Input;
 
 function App() {
-  const [randomJokes, setRandomJoke] = useState([] as any);
-  const [searchText, setSearch] = useState('' as any);
-  const [loader, setLoader] = useState(true);
+  const [randomJokes, setRandomJoke] = useState([]);
+  const [searchText, setSearch] = useState('' as string);
+  const [loader, setLoader] = useState(false);
     
   useEffect(() => {
-      getJoke();
-  },[]);
+    //Loads initial set of jokes
+    getJoke();
+  },[searchText]);
 
+  //Function for getting list of jokes via api  
   const getJoke = async () => {
-    let jokesList : string[] = [];
-      while(jokesList.length < 10){
-          const response = await axios.get("https://icanhazdadjoke.com/", {
-            headers: { Accept: "application/json" }
-          });
-          jokesList.push(response.data)
-      }
-      setRandomJoke(jokesList);
-      setLoader(false);
+    setLoader(true);
+    const jokesList: any = await getJokes<Jokes>(searchText ? `/search?limit=10&term=${searchText}` : '/search?limit=10');
+    setRandomJoke(jokesList);
+    setLoader(false);
   }
 
   const onSearch = async (value: string) => {
-    if(value !== '' && searchText !== value){
+    if(searchText !== value){
       setSearch(value);
-      setLoader(true);
-      const response = await axios.get("https://icanhazdadjoke.com/search", {
-          headers: { Accept: "application/json" },
-          params: { "limit": 10, "term": value }
-        });
-      setRandomJoke(response.data.results)
-      setLoader(false);
     }
   }
 
   const loadMore = () => {
-    setLoader(true);
     getJoke();
   }
 
@@ -57,19 +47,23 @@ function App() {
               <Col span={14}><Search className="search-box" placeholder="Search for dad jokes" onSearch={onSearch} allowClear enterButton /></Col>
           </Row>
       </Header>
-      <Content style={{ padding: '0 50px' }}>
-        <div className="site-layout-content">
-            <Row>
-              <Col span={5}></Col>
-              <Col span={14}>
-                <JokeList jokes={randomJokes} loader={loader} />
-                {!loader && <div className="btn-load"><Button type="primary" shape="round" icon={<ArrowDownOutlined /> } size='large' onClick={loadMore}>Load More Jokes</Button></div>}
-              </Col>
-              <Col span={5}></Col>
-            </Row>
+      <Content>
+        <div className="site-card-wrapper">
+          <Col span={16} className="center-content">
+            <Card className="card-content" bordered={true}>
+            <JokeList jokes={randomJokes} loader={loader} />
+                {!loader && 
+                  <div className="btn-load">
+                      <Button type="primary" shape="round" icon={<ArrowDownOutlined /> } size='large' onClick={loadMore}>
+                        Load More Jokes
+                      </Button>
+                  </div>
+                }
+            </Card>
+          </Col>
         </div>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>©2021 Nitor Infotech</Footer>
+      <Footer className="footer-text">©2021 Nitor Infotech</Footer>
     </Layout>
   );
 }

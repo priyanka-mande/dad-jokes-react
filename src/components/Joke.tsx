@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Typography } from 'antd';
+import React from "react";
+import { Typography, Divider } from 'antd';
 import { SmileTwoTone } from "@ant-design/icons";
 
 const { Text } = Typography;
@@ -8,11 +8,13 @@ interface Props {
   data: string;
 }
 
+//Component for individual joke display
+
 export const Joke: React.FC<Props> = ({ data }) => {
   return (
     <div className="listing">
-      <br />
-      <SmileTwoTone className="icons" /> <Text>{data}</Text> 
+      <SmileTwoTone className="icons" /> <Text>{data}</Text>
+      <Divider />
     </div>
   );
 };
