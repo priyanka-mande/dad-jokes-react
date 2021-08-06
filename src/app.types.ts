@@ -1,3 +1,8 @@
+export interface JokeObject {
+    results: Joke[],
+    total_jokes: number
+}
+
 export interface JokesList {
     jokes: Joke[],
     loader: boolean

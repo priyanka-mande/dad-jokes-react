@@ -3,7 +3,7 @@ import { Layout, Typography, Row, Col, Input, Button, Card } from "antd";
 import { ArrowDownOutlined } from "@ant-design/icons";
 import { getJokes } from "./resource/Api/Api";
 import { JokeList } from "./components/JokeList";
-import { Joke } from "./app.types";
+import { Joke, JokeObject } from "./app.types";
 import "antd/dist/antd.css";
 import "./resource/css/index.css";
 
@@ -14,6 +14,7 @@ const { Search } = Input;
 function App() {
   const [randomJokes, setRandomJoke] = useState<Joke[]>([]);
   const [searchText, setSearch] = useState<string>("");
+  const [totalJokes, setTotalJokes] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loader, setLoader] = useState(false);
 
@@ -21,12 +22,13 @@ function App() {
     //Function for getting list of jokes via api
     (async function(){
       setLoader(true);
-      const jokesList: Joke[] = await getJokes(
+      const jokesList: JokeObject = await getJokes(
         `/search?page=${currentPage}&limit=10&term=${searchText}`
       );
       currentPage > 1
-        ? setRandomJoke([...randomJokes, ...jokesList])
-        : setRandomJoke(jokesList);
+        ? setRandomJoke([...randomJokes, ...jokesList.results])
+        : setRandomJoke(jokesList.results);
+      setTotalJokes(jokesList.total_jokes);
       setLoader(false);
     })();
   }, [searchText, currentPage]);
@@ -68,7 +70,7 @@ function App() {
           <Col span={16} className="center-content">
             <Card className="card-content" bordered={true}>
               <JokeList jokes={randomJokes} loader={loader} />
-              {!loader && (
+              {(!loader && totalJokes !== randomJokes.length) && (
                 <div className="btn-load">
                   <Button
                     type="primary"

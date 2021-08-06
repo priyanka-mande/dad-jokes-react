@@ -7,7 +7,7 @@ export async function getJokes<T>(url: string): Promise<T> {
       headers: { Accept: "application/json" },
     });
     let data = await response.json();
-    return data.results;
+    return data;
   } catch (err) {
     return err;
   }
