@@ -3,7 +3,7 @@ import { Layout, Typography, Row, Col, Input, Button, Card } from "antd";
 import { ArrowDownOutlined } from "@ant-design/icons";
 import { getJokes } from "./resource/Api/Api";
 import { JokeList } from "./components/JokeList";
-import { Joke, JokeObject } from "./app.types";
+import { Joke } from "./app.types";
 import "antd/dist/antd.css";
 import "./resource/css/index.css";
 
@@ -22,13 +22,13 @@ function App() {
     //Function for getting list of jokes via api
     (async function(){
       setLoader(true);
-      const jokesList: JokeObject = await getJokes(
+      const {results, total_jokes} = await getJokes(
         `/search?page=${currentPage}&limit=10&term=${searchText}`
       );
       currentPage > 1
-        ? setRandomJoke([...randomJokes, ...jokesList.results])
-        : setRandomJoke(jokesList.results);
-      setTotalJokes(jokesList.total_jokes);
+        ? setRandomJoke([...randomJokes, ...results])
+        : setRandomJoke(results);
+      setTotalJokes(total_jokes);
       setLoader(false);
     })();
   }, [searchText, currentPage]);
@@ -70,7 +70,7 @@ function App() {
           <Col span={16} className="center-content">
             <Card className="card-content" bordered={true}>
               <JokeList jokes={randomJokes} loader={loader} />
-              {(!loader && totalJokes !== randomJokes.length) && (
+              {(!loader && totalJokes > randomJokes.length) && (
                 <div className="btn-load">
                   <Button
                     type="primary"
