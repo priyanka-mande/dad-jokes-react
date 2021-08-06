@@ -20,17 +20,19 @@ function App() {
 
   useEffect(() => {
     //Function for getting list of jokes via api
-    (async function(){
+    (async function () {
       setLoader(true);
-      const {results, total_jokes} = await getJokes(
+      const { results, total_jokes } = await getJokes(
         `/search?page=${currentPage}&limit=10&term=${searchText}`
       );
-      currentPage > 1
-        ? setRandomJoke([...randomJokes, ...results])
-        : setRandomJoke(results);
+      // TODO: resolve eslint formatting warnings.
+      /* eslint-disable no-unused-expressions */
+      setRandomJoke(currentPage > 1 ? [...randomJokes, ...results] : results);
       setTotalJokes(total_jokes);
       setLoader(false);
     })();
+    // TODO: resolve eslint formatting warnings.
+    /* eslint-disable react-hooks/exhaustive-deps */
   }, [searchText, currentPage]);
 
   const onSearch = async (value: string) => {
@@ -70,7 +72,7 @@ function App() {
           <Col span={16} className="center-content">
             <Card className="card-content" bordered={true}>
               <JokeList jokes={randomJokes} loader={loader} />
-              {(!loader && totalJokes > randomJokes.length) && (
+              {!loader && totalJokes > randomJokes.length && (
                 <div className="btn-load">
                   <Button
                     type="primary"
